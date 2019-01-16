@@ -24,11 +24,14 @@ class App extends Component {
             <li>
               <Link to="/writers">Writers</Link>
             </li>
+            <li>
+              <Link to="/errors">Errors</Link>
+            </li>  
           </ul>
           <hr/>
           <Route exact path="/" render={ () => <div><h3>Home</h3></div> } />
           <Route path="/writers" render={ () => <Writers/> }/>
-
+          <Route path="/errors" render={ () => <div><h3>Errors</h3></div> }/>
         </div>
       </BrowserRouter>
     );
