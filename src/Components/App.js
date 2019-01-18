@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Link, Route } from 'react-router-dom';
 
+import { HomePage } from './Home';
 import Writers from './Writers';
+import { PageNotFound } from './Errors';
 
 class App extends Component {
   state = {
@@ -14,6 +16,10 @@ class App extends Component {
   }
 
   render() {
+console.error('App');
+console.log('this.state: ',this.state);    
+    const writers = this.state.writers;
+    
     return (
       <BrowserRouter>
         <div>
@@ -29,9 +35,12 @@ class App extends Component {
             </li>  
           </ul>
           <hr/>
-          <Route exact path="/" render={ () => <div><h3>Home</h3></div> } />
-          <Route path="/writers" render={ () => <Writers/> }/>
-          <Route path="/errors" render={ () => <div><h3>Errors</h3></div> }/>
+          <Route exact path="/" component={HomePage} />
+          <Route 
+            path="/writers" 
+            render={ (props) => <Writers {...props} writers={writers} /> } 
+          />
+          <Route path="/errors" render={ () => <PageNotFound/> } />
         </div>
       </BrowserRouter>
     );
