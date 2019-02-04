@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Link, Route } from 'react-router-dom';
+import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
 
 import { HomePage } from './Home';
-import Writers from './Writers';
+import { Writers } from './Writers';
 import { PageNotFound } from './Errors';
 
 class App extends Component {
@@ -11,12 +11,12 @@ class App extends Component {
   }
 
   async componentDidMount() {
-    const writers = await(await fetch('http://localhost:3004/writers')).json();
+    const writers = await(await fetch('http://localhost:3020/writers?_embed=texts')).json();
     this.setState({ writers });
   }
 
   render() {
-console.error('App');
+console.error('src/Components/App.js');
 console.log('this.state: ',this.state);    
     const writers = this.state.writers;
     
@@ -35,12 +35,16 @@ console.log('this.state: ',this.state);
             </li>  
           </ul>
           <hr/>
-          <Route exact path="/" component={HomePage} />
-          <Route 
-            path="/writers" 
-            render={ (props) => <Writers {...props} writers={writers} /> } 
-          />
-          <Route path="/errors" render={ () => <PageNotFound/> } />
+          <Switch>
+            <Route exact path="/" component={HomePage} />
+            <Route 
+              path="/writers" 
+              render={ (props) => <Writers {...props} writers={writers} /> } 
+            />
+            
+            <Route  render={ (props) => { return <PageNotFound {...props} urlTyped={props.location.pathname}/> } }/>
+            
+          </Switch>  
         </div>
       </BrowserRouter>
     );
@@ -48,3 +52,6 @@ console.log('this.state: ',this.state);
 }
 
 export default App;
+
+ //<Route render={ () => { return <Redirect to="/404"/> } }/>
+ //<Route path="/404" component={PageNotFound}/>
